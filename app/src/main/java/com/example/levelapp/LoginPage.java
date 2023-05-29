@@ -5,10 +5,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthMethodPickerLayout;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -17,83 +27,69 @@ import java.util.List;
 
 public class LoginPage extends AppCompatActivity {
 
+//    Components
+    EditText user_email, user_password;
+    Button login_btn;
+    TextView signup;
+
     FirebaseAuth mAuth;
-
-    FirebaseAuth.AuthStateListener mAuthListener;
-//    AuthMethodPickerLayout mAuthLayout = new AuthMethodPickerLayout.Builder(R.layout.activity_login_page)
-//            .setGoogleButtonId();
-
-    public static final int RC_SIGN_IN = 1;
-
-    List<AuthUI.IdpConfig> providers = Arrays.asList(
-            new AuthUI.IdpConfig.EmailBuilder().build(),
-            new AuthUI.IdpConfig.GoogleBuilder().build()
-    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_login_page);
-//        getSupportActionBar().hide();
 
+//        initialization
+        user_email = findViewById(R.id.etEmail);
+        user_password = findViewById(R.id.etPassword);
+        signup = findViewById(R.id.tvSignUp);
+        login_btn = findViewById(R.id.login_btn);
+
+//        firebase login
         mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
+
+//        on click listener
+        login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-//                checking if the current user is available
-                FirebaseUser user = mAuth.getCurrentUser();
-//                if yes, then launch main activity
-                if (user != null) {
-                    Intent i = new Intent(LoginPage.this, MainActivity.class);
-                    startActivity(i);
-                }
-//                if not, then sign up
-                else {
-                    startActivityForResult(AuthUI.getInstance()
-                                    // below line is used to
-                                    // create our sign in intent
-                                    .createSignInIntentBuilder()
-
-                                    // below line is used for adding smart
-                                    // lock for our authentication.
-                                    // smart lock is used to check if the user
-                                    // is authentication through different devices.
-                                    // currently we are disabling it.
-                                    .setIsSmartLockEnabled(false)
-
-                                    // we are adding different login providers which
-                                    // we have mentioned above in our list.
-                                    // we can add more providers according to our
-                                    // requirement which are available in firebase.
-                                    .setAvailableProviders(providers)
-
-                                    // after setting our theme and logo
-                                    // we are calling a build() method
-                                    // to build our login screen.
-                                    .build(),
-                            // and lastly we are passing our const
-                            // integer which is declared above.
-                            RC_SIGN_IN
-                    );
-                }
+            public void onClick(View view) {
+                String email = user_email.getText().toString();
+                String password = user_password.getText().toString();
+                login(email, password);
             }
-        };
+        });
+
+        signup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toSignUpPage();
+            }
+        });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // we are calling our auth
-        // listener method on app resume.
-        mAuth.addAuthStateListener(mAuthListener);
+    private void login(String email, String password) {
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(LoginPage.this, "Login Success!", Toast.LENGTH_SHORT).show();
+                    FirebaseUser currentUser = mAuth.getCurrentUser();
+                    toMainActivity(currentUser);
+                }
+                else Toast.makeText(LoginPage.this, "Login Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        // here we are calling remove auth
-        // listener method on stop.
-        mAuth.removeAuthStateListener(mAuthListener);
+    private void toMainActivity(FirebaseUser user) {
+        if (user != null) {
+            Intent main = new Intent(LoginPage.this, MainActivity.class);
+            startActivity(main);
+        }
     }
+
+    private void toSignUpPage() {
+        Intent signUp = new Intent(LoginPage.this, SignupPage.class);
+        startActivity(signUp);
+    }
+
 }

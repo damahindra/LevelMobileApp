@@ -15,8 +15,10 @@ import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthMethodPickerLayout;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -111,28 +113,15 @@ public class SignupPage extends AppCompatActivity {
     }
 
     private void signUp(String email, String password) {
-        mAuth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
-            public void onSuccess(AuthResult authResult) {
-                Log.d("Successful account creation", "The account is successfully created");
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(SignupPage.this, "Account Created!", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                toInsertData();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.w("Account Creation Failure", "Failed tp create account");
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(SignupPage.this, "Account Creation Failed!", Toast.LENGTH_SHORT).show();
-                    }
-                });
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(SignupPage.this, "Account Created!", Toast.LENGTH_SHORT).show();
+                    FirebaseUser currentUser = mAuth.getCurrentUser();
+                    toInsertData(currentUser);
+                }
+                else Toast.makeText(SignupPage.this, "Failed to sign up", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -147,8 +136,10 @@ public class SignupPage extends AppCompatActivity {
         mAuth.removeAuthStateListener(mAuthListener);
     }
 
-    private void toInsertData() {
-        Intent i = new Intent(SignupPage.this, InsertData.class);
-        startActivity(i);
+    private void toInsertData(FirebaseUser user) {
+        if (user != null) {
+            Intent i = new Intent(SignupPage.this, InsertData.class);
+            startActivity(i);
+        }
     }
 }

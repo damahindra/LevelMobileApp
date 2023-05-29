@@ -69,6 +69,7 @@ public class InsertData extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userDatabaseReference.setValue(userData);
                 Toast.makeText(InsertData.this, "Data Added to Database", Toast.LENGTH_SHORT).show();
+                toMainActivity();
             }
 
             @Override
