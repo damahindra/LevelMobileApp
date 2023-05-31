@@ -7,9 +7,11 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.levelapp.Model.UserData;
+import com.firebase.ui.auth.data.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,6 +39,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -64,7 +68,7 @@ public class ProfilePage extends AppCompatActivity {
     int PICK_IMAGE_REQUEST = 1021;
     Uri filePath;
     String newProfilePicture, userDataPath;
-    UserData userData;
+    UserData userData, newUserData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +89,7 @@ public class ProfilePage extends AppCompatActivity {
         tvEmail = findViewById(R.id.tvEmail);
         etNoHP = findViewById(R.id.etNoHP);
         etTanggalLahir = findViewById(R.id.etTanggalLahir);
+        newUserData = new UserData();
 
 //        Current User
         mAuth = FirebaseAuth.getInstance();
@@ -112,12 +117,12 @@ public class ProfilePage extends AppCompatActivity {
                     etTanggalLahir.setHint(tanggallahir);
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(ProfilePage.this, "Failed to fetch data, please try again later", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProfilePage.this, "Failed to fetch data", Toast.LENGTH_SHORT).show();
             }
         });
+
         storageRef.child(newProfilePicture).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -162,6 +167,32 @@ public class ProfilePage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 updateProfile(newProfilePicture);
+                if (!(etNoHP.getText().toString().isEmpty())) {
+                    databaseRef.child(userDataPath).child("noHP").setValue(etNoHP.getText().toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            etNoHP.setText("");
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w("Ga kedetek", "Gabisa inimah brow");
+                        }
+                    });
+                }
+                if (!(etTanggalLahir.getText().toString().isEmpty())) {
+                    databaseRef.child(userDataPath).child("tanggalLahir").setValue(etTanggalLahir.getText().toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            etTanggalLahir.setText("");
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w("Ga kedetek", "Gabisa inimah brow");
+                        }
+                    });
+                }
             }
         });
 
@@ -245,23 +276,6 @@ public class ProfilePage extends AppCompatActivity {
                     sendData(ref, progressDialog);
                 }
             });
-
-            if (!(etNoHP.getText().toString().isEmpty() || etTanggalLahir.getText().toString().isEmpty())) {
-                databaseRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (!etNoHP.getText().toString().isEmpty()) userData.setNoHP(etNoHP.getText().toString());
-                        if (!etTanggalLahir.getText().toString().isEmpty()) userData.setTanggalLahir(etTanggalLahir.getText().toString());
-                        databaseRef.child(userDataPath).setValue(userData);
-                        Toast.makeText(ProfilePage.this, "Data Updated", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(ProfilePage.this, "Failed to add data", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
         }
     }
 
