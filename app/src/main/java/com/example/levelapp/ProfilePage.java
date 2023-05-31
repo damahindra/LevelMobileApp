@@ -246,14 +246,22 @@ public class ProfilePage extends AppCompatActivity {
                 }
             });
 
-//            if (!(TextUtils.isEmpty(etNoHP.getText()) || TextUtils.isEmpty(etTanggalLahir.getText()))) {
-//                if (!TextUtils.isEmpty(etNoHP.getText())) {
-//                    databaseRef.child(userDataPath).child("noHP").setValue(etNoHP.getText().toString());
-//                }
-//                if (!TextUtils.isEmpty(etTanggalLahir.getText())) {
-//                    databaseRef.child(userDataPath).child("tanggalLahir").setValue(etTanggalLahir.getText().toString());
-//                }
-//            }
+            if (!(etNoHP.getText().toString().isEmpty() || etTanggalLahir.getText().toString().isEmpty())) {
+                databaseRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (!etNoHP.getText().toString().isEmpty()) userData.setNoHP(etNoHP.getText().toString());
+                        if (!etTanggalLahir.getText().toString().isEmpty()) userData.setTanggalLahir(etTanggalLahir.getText().toString());
+                        databaseRef.child(userDataPath).setValue(userData);
+                        Toast.makeText(ProfilePage.this, "Data Updated", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(ProfilePage.this, "Failed to add data", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         }
     }
 
