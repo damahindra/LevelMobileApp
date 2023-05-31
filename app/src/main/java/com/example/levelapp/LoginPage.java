@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -52,6 +53,23 @@ public class LoginPage extends AppCompatActivity {
         login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String emptyFieldError = "Field cannot be empty";
+                if (user_email.getText().toString().isEmpty() && user_password.getText().toString().isEmpty()) {
+                    Log.w("Email and Password Empty", emptyFieldError);
+                    user_email.setError(emptyFieldError);
+                    user_password.setError(emptyFieldError);
+                    return;
+                }
+                else if (user_email.getText().toString().isEmpty()) {
+                    Log.w("Email Empty", emptyFieldError);
+                    user_email.setError(emptyFieldError);
+                    return;
+                }
+                else if (user_password.getText().toString().isEmpty()) {
+                    Log.w("Password Empty", emptyFieldError);
+                    user_password.setError(emptyFieldError);
+                    return;
+                }
                 String email = user_email.getText().toString();
                 String password = user_password.getText().toString();
                 login(email, password);
