@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.levelapp.MainPage.MainPageActivity;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -42,8 +43,8 @@ public class LandingPage extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
-            Intent toSignupPage = new Intent(LandingPage.this, MainActivity.class);
-            startActivity(toSignupPage);
+            Intent toMainPage = new Intent(LandingPage.this, MainPageActivity.class);
+            startActivity(toMainPage);
         }
     }
 }
