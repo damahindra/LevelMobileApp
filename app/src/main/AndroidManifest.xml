@@ -12,9 +12,14 @@
         android:theme="@style/Theme.LevelApp"
         tools:targetApi="31">
         <activity
+            android:name=".MainPage.WisataAdapter"
+            android:exported="false" />
+        <activity
+            android:name=".MainPage.Wisata"
+            android:exported="false" />
+        <activity
             android:name=".MainPage.MainPageActivity"
             android:exported="false" />
-
         <activity
             android:name=".ProfilePage"
             android:exported="false" />
