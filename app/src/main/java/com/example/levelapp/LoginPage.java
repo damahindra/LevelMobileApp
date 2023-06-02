@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.levelapp.MainPage.MainPageActivity;
 import com.firebase.ui.auth.AuthMethodPickerLayout;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -100,7 +101,7 @@ public class LoginPage extends AppCompatActivity {
 
     private void toMainActivity(FirebaseUser user) {
         if (user != null) {
-            Intent main = new Intent(LoginPage.this, MainActivity.class);
+            Intent main = new Intent(LoginPage.this, MainPageActivity.class);
             startActivity(main);
         }
     }
