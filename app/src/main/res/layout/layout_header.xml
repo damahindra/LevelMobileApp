@@ -7,17 +7,12 @@
     android:padding="16dp">
 
     <ImageView
-        android:id="@+id/logoApp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/logo"
-        android:layout_centerHorizontal="true" />
-
-    <ImageButton
         android:id="@+id/profileHeader"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
+        android:layout_marginTop="16dp"
         android:background="@drawable/default_profile_picture"
         android:padding="4dp" />
 

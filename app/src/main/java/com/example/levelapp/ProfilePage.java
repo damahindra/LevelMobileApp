@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.levelapp.MainPage.MainPageActivity;
 import com.example.levelapp.Model.UserData;
 import com.firebase.ui.auth.data.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -151,7 +152,7 @@ public class ProfilePage extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                toMainActivity();
+                finish();
             }
         });
 
@@ -318,10 +319,5 @@ public class ProfilePage extends AppCompatActivity {
                         progressDialog.setMessage("Uploaded " + (int)progress + "%");
                     }
                 });
-    }
-
-    private void toMainActivity() {
-        Intent main = new Intent(ProfilePage.this, MainActivity.class);
-        startActivity(main);
     }
 }
