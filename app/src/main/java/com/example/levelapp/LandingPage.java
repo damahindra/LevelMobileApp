@@ -43,7 +43,7 @@ public class LandingPage extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
-            Intent toMainPage = new Intent(LandingPage.this, MainPageActivity.class);
+            Intent toMainPage = new Intent(LandingPage.this, MainActivity.class);
             startActivity(toMainPage);
         }
     }
