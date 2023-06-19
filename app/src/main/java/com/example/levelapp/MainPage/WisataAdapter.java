@@ -1,5 +1,6 @@
 package com.example.levelapp.MainPage;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.levelapp.R;
 
 import java.util.List;
@@ -30,12 +32,14 @@ public class WisataAdapter extends RecyclerView.Adapter<WisataAdapter.WisataView
         return new WisataViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull WisataViewHolder holder, int position) {
         Wisata wisata = wisataList.get(position);
-        holder.namaWisata.setText(wisata.getNama());
-        holder.lokasiWisata.setText(wisata.getLokasi());
-        holder.imageWisata.setImageResource(wisata.getFoto());
+        holder.namaWisata.setText(wisata.getName());
+        holder.lokasiWisata.setText(wisata.getPlace());
+        holder.wisataPrice.setText("Rp"+ wisata.getPrice());
+        Glide.with(holder.itemView.getContext()).load(wisata.getPicture()).into(holder.imageWisata);
     }
 
     @Override
@@ -46,7 +50,7 @@ public class WisataAdapter extends RecyclerView.Adapter<WisataAdapter.WisataView
     public class WisataViewHolder extends RecyclerView.ViewHolder {
         ImageView imageWisata;
         TextView namaWisata;
-        TextView lokasiWisata;
+        TextView lokasiWisata, wisataPrice;
         ImageView favoriteIcon;
         int favorite = R.drawable.favorite_icon;
         int clicked;
@@ -57,6 +61,7 @@ public class WisataAdapter extends RecyclerView.Adapter<WisataAdapter.WisataView
             namaWisata = itemView.findViewById(R.id.namaWisata);
             lokasiWisata = itemView.findViewById(R.id.lokasiWisata);
             favoriteIcon = itemView.findViewById(R.id.favoriteIcon);
+            wisataPrice = itemView.findViewById(R.id.wisataPrice);
 
             favoriteIcon.setImageResource(favorite);
 
