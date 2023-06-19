@@ -47,12 +47,34 @@ public class WisataAdapter extends RecyclerView.Adapter<WisataAdapter.WisataView
         ImageView imageWisata;
         TextView namaWisata;
         TextView lokasiWisata;
+        ImageView favoriteIcon;
+        int favorite = R.drawable.favorite_icon;
+        int clicked;
 
         public WisataViewHolder(@NonNull View itemView) {
             super(itemView);
             imageWisata = itemView.findViewById(R.id.imageWisata);
             namaWisata = itemView.findViewById(R.id.namaWisata);
             lokasiWisata = itemView.findViewById(R.id.lokasiWisata);
+            favoriteIcon = itemView.findViewById(R.id.favoriteIcon);
+
+            favoriteIcon.setImageResource(favorite);
+
+            favoriteIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (favorite == R.drawable.favorite_icon) {
+                        clicked = R.drawable.favorite_icon_clicked;
+                        favorite = R.drawable.favorite_icon_clicked;
+                    }
+                    else {
+                        clicked = R.drawable.favorite_icon;
+                        favorite = R.drawable.favorite_icon;
+                    }
+                    favoriteIcon.setImageResource(clicked);
+//                    code to add items to favorite
+                }
+            });
         }
     }
 }

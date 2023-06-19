@@ -76,14 +76,14 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="35dp"
         android:fontFamily="@font/montserrat_light"
-        android:text="Hello!"
+        android:text="Hello,"
         android:textColor="#373737"
         android:textSize="10sp"
         app:layout_constraintStart_toEndOf="@+id/cardView3"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"

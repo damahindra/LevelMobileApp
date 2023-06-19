@@ -2,7 +2,6 @@ package com.example.levelapp.MainPage;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,12 +9,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.levelapp.MainActivity;
+import com.example.levelapp.Model.UserData;
 import com.example.levelapp.ProfilePage;
 import com.example.levelapp.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -23,6 +22,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -34,12 +38,16 @@ public class MainPageActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private WisataAdapter adapter;
     private List<Wisata> wisataList;
+    FirebaseDatabase userDatabase;
+    DatabaseReference databaseRef;
+    UserData userData;
     FirebaseStorage storage;
     StorageReference storageRef;
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
     ImageView profilePicture;
-    String newProfilePicture;
+    String newProfilePicture, userDataPath;
+    TextView username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,15 +59,38 @@ public class MainPageActivity extends AppCompatActivity {
         wisataList = new ArrayList<>();
 
 //      initialization
+        userDatabase = FirebaseDatabase.getInstance();
+        databaseRef = userDatabase.getReference();
         profilePicture = findViewById(R.id.profileBtn);
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
+        username = findViewById(R.id.username);
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
 
 //      user profile picture path
-        if (currentUser != null) newProfilePicture = "images/" + currentUser.getEmail() + "/newProfilePicture.png";
+        if (currentUser != null) {
+            newProfilePicture = "images/" + currentUser.getEmail() + "/newProfilePicture.png";
+            userDataPath = "users/" + currentUser.getEmail().replaceAll("@gmail.com", "");
+        }
+
+        databaseRef.child(userDataPath).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                userData = snapshot.getValue(UserData.class);
+                if (userData != null) {
+                    String namaDepan = userData.getNamaDepan() + "!";
+
+//                    setting the textview to user's front name
+                    username.setText(namaDepan);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(MainPageActivity.this, "Failed to fetch data", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 //      set the profile picture by fetching data from firebase storage
         storageRef.child(newProfilePicture).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {

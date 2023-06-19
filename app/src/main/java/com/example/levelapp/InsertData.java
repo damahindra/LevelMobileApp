@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.levelapp.MainPage.MainPageActivity;
 import com.example.levelapp.Model.UserData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -93,7 +94,7 @@ public class InsertData extends AppCompatActivity {
     }
 
     private void toMainActivity() {
-        Intent main = new Intent(InsertData.this, MainActivity.class);
+        Intent main = new Intent(InsertData.this, MainPageActivity.class);
         startActivity(main);
     }
 }
