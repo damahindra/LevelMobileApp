@@ -12,6 +12,12 @@
         android:theme="@style/Theme.LevelApp"
         tools:targetApi="31">
         <activity
+            android:name=".CheckoutPage"
+            android:exported="false" />
+        <activity
+            android:name=".WisataInfo"
+            android:exported="false" />
+        <activity
             android:name=".MainPage.WisataAdapter"
             android:exported="false" />
         <activity
@@ -40,8 +46,7 @@
         </activity>
         <activity
             android:name=".SignupPage"
-            android:exported="false">
-        </activity>
+            android:exported="false" />
 
         <meta-data
             android:name="preloaded_fonts"

@@ -2,6 +2,7 @@ package com.example.levelapp.MainPage;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.levelapp.R;
+import com.example.levelapp.WisataInfo;
 
 import java.util.List;
 
@@ -40,6 +42,21 @@ public class WisataAdapter extends RecyclerView.Adapter<WisataAdapter.WisataView
         holder.lokasiWisata.setText(wisata.getPlace());
         holder.wisataPrice.setText("Rp"+ wisata.getPrice());
         Glide.with(holder.itemView.getContext()).load(wisata.getPicture()).into(holder.imageWisata);
+        holder.imageWisata.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Start the new activity here
+                Wisata selected = wisataList.get(holder.getAdapterPosition());
+                Intent info = new Intent(view.getContext(), WisataInfo.class);
+                // Pass any necessary data to the new activity using intent extras
+                info.putExtra("name", selected.getName());
+                info.putExtra("place", selected.getPlace());
+                info.putExtra("price", holder.wisataPrice.getText().toString());
+                info.putExtra("description", selected.getDescription());
+                info.putExtra("image", selected.getPicture());
+                view.getContext().startActivity(info);
+            }
+        });
     }
 
     @Override
@@ -61,10 +78,9 @@ public class WisataAdapter extends RecyclerView.Adapter<WisataAdapter.WisataView
             namaWisata = itemView.findViewById(R.id.namaWisata);
             lokasiWisata = itemView.findViewById(R.id.lokasiWisata);
             favoriteIcon = itemView.findViewById(R.id.favoriteIcon);
-            wisataPrice = itemView.findViewById(R.id.wisataPrice);
+            wisataPrice = itemView.findViewById(R.id.price_info);
 
             favoriteIcon.setImageResource(favorite);
-
             favoriteIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
