@@ -19,6 +19,8 @@ public class WisataInfo extends AppCompatActivity {
     TextView namaWisata, lokasiWisata, wisataPrice, wisataDescription;
     Button checkout_btn;
 
+    Uri info_image;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,10 +47,10 @@ public class WisataInfo extends AppCompatActivity {
             String price = intent.getStringExtra("price");
             String place = intent.getStringExtra("place");
             String description = intent.getStringExtra("description");
-            Uri image = intent.getParcelableExtra("image");
+            info_image = intent.getParcelableExtra("image");
 
             //        set the info page
-            Glide.with(WisataInfo.this).load(image).into(imageWisata);
+            Glide.with(WisataInfo.this).load(info_image).into(imageWisata);
             namaWisata.setText(name);
             lokasiWisata.setText(place);
             wisataPrice.setText(price);
@@ -76,6 +78,7 @@ public class WisataInfo extends AppCompatActivity {
         checkout.putExtra("name", namaWisata.getText().toString());
         checkout.putExtra("place", lokasiWisata.getText().toString());
         checkout.putExtra("price", Integer.parseInt(wisataPrice.getText().toString().replaceAll("Rp", "")));
+        checkout.putExtra("image", info_image);
         startActivity(checkout);
     }
 }
