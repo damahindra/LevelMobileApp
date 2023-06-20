@@ -41,7 +41,7 @@
         <ImageView
             android:id="@+id/desc_image"
             android:layout_width="350dp"
-            android:layout_height="300dp"
+            android:layout_height="200dp"
             android:scaleType="centerCrop"
             app:srcCompat="@drawable/world_travel_free_vector" />
     </androidx.cardview.widget.CardView>
@@ -117,7 +117,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="33dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/montserrat_bold"
         android:text="Description"
         android:textColor="#121212"
@@ -149,16 +149,78 @@
         </LinearLayout>
     </ScrollView>
 
-    <Button
-        android:id="@+id/checkoutBtn"
-        android:layout_width="357dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="20dp"
+    <TextView
+        android:id="@+id/ticketCount"
+        android:layout_width="25dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="140dp"
+        android:fontFamily="@font/poppins_light"
+        android:gravity="center"
+        android:text="1"
+        android:textAlignment="gravity"
+        android:textColor="#121212"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/plusButton"
+        app:layout_constraintStart_toEndOf="@+id/minBtn"
+        app:layout_constraintTop_toBottomOf="@+id/overlayLayout" />
+
+    <TextView
+        android:id="@+id/warning_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="188dp"
         android:fontFamily="@font/montserrat_light"
-        android:text="Checkout!"
-        app:cornerRadius="20dp"
+        android:text="TextView"
+        android:textColor="#E91E63"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/minBtn" />
+
+    <Button
+        android:id="@+id/book_btn"
+        android:layout_width="165dp"
+        android:layout_height="61dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/montserrat_light"
+        android:text="Book Now!"
+        app:cornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/plusButton"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="130dp"
+        android:layout_marginEnd="30dp"
+        android:text="+"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/overlayLayout" />
+
+    <Button
+        android:id="@+id/minBtn"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="250dp"
+        android:layout_marginTop="130dp"
+        android:text="-"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/overlayLayout" />
+
+    <TextView
+        android:id="@+id/priceTag"
+        android:layout_width="170dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="15dp"
+        android:fontFamily="@font/montserrat_light"
+        android:gravity="center"
+        android:text="Price / Package"
+        android:textAlignment="center"
+        android:textColor="#6A62B6"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

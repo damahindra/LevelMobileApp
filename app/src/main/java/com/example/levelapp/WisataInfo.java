@@ -17,9 +17,15 @@ public class WisataInfo extends AppCompatActivity {
 
     ImageView imageWisata, backBtn;
     TextView namaWisata, lokasiWisata, wisataPrice, wisataDescription;
+    TextView Price, Ticket, warning;
     Button checkout_btn;
 
     Uri info_image;
+
+    String price;
+
+    Button Plus, Min;
+    int jumlah = 1 ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +33,11 @@ public class WisataInfo extends AppCompatActivity {
         setContentView(R.layout.activity_wisata_info);
 
         //        initialization
+        Plus = findViewById(R.id.plusButton);
+        Min = findViewById(R.id.minBtn);
+        Price = findViewById(R.id.priceTag);
+        warning = findViewById(R.id.warning_text);
+        Ticket = findViewById(R.id.ticketCount);
         imageWisata = findViewById(R.id.desc_image);
         namaWisata = findViewById(R.id.namaWisata);
         lokasiWisata = findViewById(R.id.lokasiWisata);
@@ -35,7 +46,7 @@ public class WisataInfo extends AppCompatActivity {
         wisataDescription.setMaxLines(3);
         wisataDescription.setMovementMethod(new ScrollingMovementMethod());
 
-        checkout_btn = findViewById(R.id.checkoutBtn);
+        checkout_btn = findViewById(R.id.book_btn);
         backBtn = findViewById(R.id.info_back_btn);
 
         Intent intent = getIntent();
@@ -44,7 +55,7 @@ public class WisataInfo extends AppCompatActivity {
         if (intent != null) {
             // Extract the extras from the intent
             String name = intent.getStringExtra("name");
-            String price = intent.getStringExtra("price");
+            price = intent.getStringExtra("price");
             String place = intent.getStringExtra("place");
             String description = intent.getStringExtra("description");
             info_image = intent.getParcelableExtra("image");
@@ -57,6 +68,9 @@ public class WisataInfo extends AppCompatActivity {
             wisataDescription.setText(description);
         }
 
+        warning.setText("");
+        Price.setText(price);
+
 //        onClickListeners
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,17 +82,41 @@ public class WisataInfo extends AppCompatActivity {
         checkout_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                toCheckoutPage();
+                toReceiptPage();
+            }
+        });
+
+        Min.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (jumlah > 1) {
+                    if (jumlah == 5) warning.setText("");
+                    jumlah--;
+                    Ticket.setText(String.valueOf(jumlah));
+                    Price.setText("Rp" + Integer.parseInt(price.replaceAll("Rp", ""))*jumlah);
+                }
+            }
+        });
+        Plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (jumlah < 5) {
+                    jumlah++;
+                    Ticket.setText(String.valueOf(jumlah));
+                    Price.setText("Rp" + Integer.parseInt(price.replaceAll("Rp", ""))*jumlah);
+                }
+                else {
+                    warning.setText("Max 5 tickets only");
+                }
             }
         });
     }
 
-    private void toCheckoutPage() {
-        Intent checkout = new Intent(WisataInfo.this, CheckoutPage.class);
-        checkout.putExtra("name", namaWisata.getText().toString());
-        checkout.putExtra("place", lokasiWisata.getText().toString());
-        checkout.putExtra("price", Integer.parseInt(wisataPrice.getText().toString().replaceAll("Rp", "")));
-        checkout.putExtra("image", info_image);
+    private void toReceiptPage() {
+        Intent checkout = new Intent(WisataInfo.this, Receipt.class);
+        checkout.putExtra("destination_name", namaWisata.getText().toString());
+        checkout.putExtra("destination_location", lokasiWisata.getText().toString());
+        checkout.putExtra("total_price", Price.getText().toString());
         startActivity(checkout);
     }
 }
