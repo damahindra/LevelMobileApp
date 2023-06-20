@@ -15,12 +15,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.levelapp.Favorites;
 import com.example.levelapp.Model.UserData;
 import com.example.levelapp.ProfilePage;
 import com.example.levelapp.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -53,8 +55,11 @@ public class MainPageActivity extends AppCompatActivity {
     TextView username;
     String postPath;
 
+//    Button to move to favorites activity
+    FloatingActionButton favorites;
+
 //    variables for storing wisata datas
-    private int id, price;
+    private int id, price, icon;
     private String name, place;
     private boolean favorite;
 
@@ -78,6 +83,7 @@ public class MainPageActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
 
+        favorites = findViewById(R.id.favorites);
         postPath = "posts";
 
 //      user profile picture path
@@ -155,10 +161,11 @@ public class MainPageActivity extends AppCompatActivity {
                                 break;
                             case "favorite" :
                                 favorite = (boolean) Objects.requireNonNull(nestedValue);
+                                icon = favorite? R.drawable.favorite_icon_clicked : R.drawable.favorite_icon;
                                 break;
                         }
                     }
-                    wisataList.add(new Wisata(id, name, place, price, favorite));
+                    wisataList.add(new Wisata(id, name, place, price, favorite, icon));
                 }
                 //        fetching all images for posts
                 storageRef.child(postPath).listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
@@ -211,11 +218,22 @@ public class MainPageActivity extends AppCompatActivity {
                 toProfilePage();
             }
         });
+        favorites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toFavorites();
+            }
+        });
 
     }
 
     private void toProfilePage() {
         Intent intent = new Intent(MainPageActivity.this, ProfilePage.class);
+        startActivity(intent);
+    }
+
+    private void toFavorites() {
+        Intent intent = new Intent(MainPageActivity.this, Favorites.class);
         startActivity(intent);
     }
 }

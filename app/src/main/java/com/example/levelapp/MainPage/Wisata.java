@@ -22,12 +22,15 @@ public class Wisata {
                                  "eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, " +
                                  "sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
-    public Wisata(int id, String name, String place, int price, boolean favorite) {
+    private int icon;
+
+    public Wisata(int id, String name, String place, int price, boolean favorite, int icon) {
         this.id = id;
         this.name = name;
         this.place = place;
         this.price = price;
         this.favorite = favorite;
+        this.icon = icon;
     }
 
     public int getId() {
@@ -60,5 +63,13 @@ public class Wisata {
 
     public String getDescription() {
         return description;
+    }
+
+    public int getIcon() {
+        return icon;
+    }
+
+    public void setIcon(int icon) {
+        this.icon = icon;
     }
 }
