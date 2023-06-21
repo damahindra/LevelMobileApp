@@ -128,6 +128,7 @@ public class Favorites extends AppCompatActivity {
                     if (favorite) wisataList.add(new Wisata(id, name, place, price, favorite, icon));
                 }
                 //        fetching all images for posts
+
                 storageRef.child(postPath).listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
                     @Override
                     public void onSuccess(ListResult listResult) {
@@ -140,10 +141,11 @@ public class Favorites extends AppCompatActivity {
 //                            add picture into model
                                     String filename = uri.getLastPathSegment();
                                     int fileIndex = Integer.parseInt(filename.substring(6, filename.lastIndexOf(".")));
-                                    if (fileIndex <= wisataList.size()) {
-                                        Wisata currentPlace = wisataList.get(fileIndex - 1);
-                                        currentPlace.setPicture(uri);
-                                        adapter.notifyItemChanged(fileIndex - 1);
+                                    for (Wisata wisata : wisataList) {
+                                        if (fileIndex == wisata.getId()) {
+                                            wisata.setPicture(uri);
+                                            adapter.notifyItemChanged(wisataList.indexOf(wisata));
+                                        }
                                     }
                                 }
                             }).addOnFailureListener(new OnFailureListener() {

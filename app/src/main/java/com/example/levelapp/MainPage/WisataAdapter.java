@@ -114,18 +114,12 @@ public class WisataAdapter extends RecyclerView.Adapter<WisataAdapter.WisataView
                     }
                     favoriteIcon.setImageResource(current_item.getIcon());
 //                    update the boolean "favorite" in realtime database
-                    databaseRef.child(current_path).child("favorite").setValue(current_status).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            adapter.notifyItemChanged(getAdapterPosition());
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
+                    databaseRef.child(current_path).child("favorite").setValue(current_status).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Toast.makeText(view.getContext(), "failed to add to favorites", Toast.LENGTH_SHORT).show();
                         }
                     });
-//                    code to add items to favorite
                 }
             });
         }

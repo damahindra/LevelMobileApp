@@ -180,10 +180,11 @@ public class MainPageActivity extends AppCompatActivity {
 //                            add picture into model
                                     String filename = uri.getLastPathSegment();
                                     int fileIndex = Integer.parseInt(filename.substring(6, filename.lastIndexOf(".")));
-                                    if (fileIndex <= wisataList.size()) {
-                                        Wisata currentPlace = wisataList.get(fileIndex - 1);
-                                        currentPlace.setPicture(uri);
-                                        adapter.notifyItemChanged(fileIndex - 1);
+                                    for (Wisata wisata : wisataList) {
+                                        if (fileIndex == wisata.getId()) {
+                                            wisata.setPicture(uri);
+                                            adapter.notifyItemChanged(wisataList.indexOf(wisata));
+                                        }
                                     }
                                 }
                             }).addOnFailureListener(new OnFailureListener() {

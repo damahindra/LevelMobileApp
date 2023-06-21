@@ -1,17 +1,28 @@
 package com.example.levelapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.levelapp.Model.UserData;
+import com.example.levelapp.Transaction.Transaction;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class WisataInfo extends AppCompatActivity {
 
@@ -26,6 +37,13 @@ public class WisataInfo extends AppCompatActivity {
 
     Button Plus, Min;
     int jumlah = 1 ;
+
+//    for user data
+    FirebaseDatabase userDatabase;
+    DatabaseReference databaseRef;
+    FirebaseAuth mAuth;
+    FirebaseUser currentUser;
+    String fullName, email, uniqueId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +100,34 @@ public class WisataInfo extends AppCompatActivity {
         checkout_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                toReceiptPage();
+
+//              User data
+                mAuth = FirebaseAuth.getInstance();
+                currentUser = mAuth.getCurrentUser();
+                userDatabase = FirebaseDatabase.getInstance();
+                databaseRef = userDatabase.getReference();
+                if (currentUser != null) {
+                    String username = "users/" + currentUser.getEmail().substring(0, currentUser.getEmail().lastIndexOf("@"));
+                    databaseRef.child(username).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            UserData userData = snapshot.getValue(UserData.class);
+                            if (userData != null) {
+                                fullName = userData.getNamaDepan() + " " + userData.getNamaBelakang();
+                                email = currentUser.getEmail();
+                            }
+
+                            postTransaction(databaseRef);
+                            toReceiptPage();
+                            finish();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
             }
         });
 
@@ -114,9 +159,20 @@ public class WisataInfo extends AppCompatActivity {
 
     private void toReceiptPage() {
         Intent checkout = new Intent(WisataInfo.this, Receipt.class);
+        checkout.putExtra("uniqueId", uniqueId);
+        checkout.putExtra("buyer_name", fullName);
+        checkout.putExtra("buyer_email", email);
         checkout.putExtra("destination_name", namaWisata.getText().toString());
         checkout.putExtra("destination_location", lokasiWisata.getText().toString());
         checkout.putExtra("total_price", Price.getText().toString());
+        checkout.putExtra("qty", String.valueOf(jumlah));
         startActivity(checkout);
+    }
+
+    private void postTransaction(DatabaseReference databaseRef) {
+        Transaction transaction = new Transaction(fullName, namaWisata.getText().toString(), lokasiWisata.getText().toString(), email, jumlah, Long.parseLong(Price.getText().toString().replaceAll("Rp", "")));
+        DatabaseReference newRef = databaseRef.child("transactions").push();
+        newRef.setValue(transaction);
+        uniqueId = newRef.getKey();
     }
 }
