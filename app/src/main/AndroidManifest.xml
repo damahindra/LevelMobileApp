@@ -36,10 +36,14 @@
             android:name=".InsertData"
             android:exported="false" />
         <activity
+            android:name=".LandingPage"
+            android:exported="false" />
+        <activity
             android:name=".LoginPage"
             android:exported="false" />
         <activity
-            android:name=".LandingPage"
+            android:name=".SplashActivity"
+            android:theme="@style/SplashTheme"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
