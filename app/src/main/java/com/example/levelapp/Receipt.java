@@ -1,12 +1,27 @@
 package com.example.levelapp;
 
+import static java.nio.file.AccessMode.WRITE;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.pdf.PdfDocument;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,11 +35,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 public class Receipt extends AppCompatActivity {
     TextView resi_no, resi_name, resi_email, destination_name, destination_place, destination_price, resi_qty;
 
     Button continueBtn;
     String id;
+
+    private LinearLayout linear;
+    private Bitmap bitmap;
 
 //    for fetching user related data
     FirebaseAuth mAuth;
@@ -49,6 +71,8 @@ public class Receipt extends AppCompatActivity {
         destination_price = findViewById(R.id.resi_biaya);
         resi_qty = findViewById(R.id.resi_qty);
         continueBtn = findViewById(R.id.btn_download);
+
+        linear = findViewById(R.id.linearLayout);
 
 //        Generating id for receipt
 
@@ -80,8 +104,55 @@ public class Receipt extends AppCompatActivity {
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                Log.d("size", "" + linear.getWidth() + " " + linear.getWidth());
+                bitmap = LoadBitmap(linear, linear.getWidth(), linear.getHeight());
+                createPdf();
+                //Intent download = new Intent(Receipt.this, ReceiptCreate.class);
+                //startActivity(download);
+                //finish();
             }
         });
+    }
+    private Bitmap LoadBitmap(LinearLayout linear, int width, int height) {
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        linear.draw(canvas);
+        return bitmap;
+    }
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    private void createPdf() {
+        WindowManager window = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics display = new DisplayMetrics();
+        this.getWindowManager().getDefaultDisplay().getMetrics(display);
+        float width = display.widthPixels;
+        float height = display.heightPixels;
+        int convertWidth = (int)width;
+        int convertHeight = (int)height;
+
+
+        PdfDocument document = new PdfDocument();
+        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(convertWidth, convertHeight, 1).create();
+        PdfDocument.Page page = document.startPage(pageInfo);
+        Canvas canvas = page.getCanvas();
+
+        Paint paint = new Paint();
+        canvas.drawPaint(paint);
+        bitmap = Bitmap.createScaledBitmap(bitmap, convertWidth, convertHeight, true);
+        canvas.drawBitmap(bitmap, 0, 0, null);
+        document.finishPage(page);
+
+        String targetPdf = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/resiLevel.pdf";;
+        File file = new File(targetPdf);
+        try {
+            document.writeTo(new FileOutputStream(file));
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "something wrong, please try again" + e.toString(), Toast.LENGTH_SHORT).show();
+
+            document.close();
+            Toast.makeText(this, "download success", Toast.LENGTH_SHORT).show();
+
+        }
     }
 }

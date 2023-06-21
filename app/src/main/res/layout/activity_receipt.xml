@@ -28,6 +28,7 @@
             android:layout_marginEnd="0dp"
             android:orientation="vertical"
             android:padding="10dp"
+            android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +53,8 @@
                     android:fontFamily="@font/montserrat_light"
                     android:text="Transaction ID"
                     android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textColor="@color/grey"/>
 
                 <TextView
                     android:id="@+id/resi_no"
@@ -80,7 +82,8 @@
                     android:fontFamily="@font/montserrat_light"
                     android:text="Nama"
                     android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textColor="@color/grey"/>
 
                 <TextView
                     android:id="@+id/resi_nama"
@@ -108,7 +111,8 @@
                     android:fontFamily="@font/montserrat_light"
                     android:text="Email"
                     android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textColor="@color/grey"/>
 
                 <TextView
                     android:id="@+id/resi_email"
@@ -136,7 +140,8 @@
                     android:fontFamily="@font/montserrat_light"
                     android:text="Destinasi"
                     android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textColor="@color/grey" />
 
                 <TextView
                     android:id="@+id/resi_destinasi"
@@ -164,7 +169,8 @@
                     android:fontFamily="@font/montserrat_light"
                     android:text="Lokasi"
                     android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textColor="@color/grey"/>
 
                 <TextView
                     android:id="@+id/resi_lokasi"
@@ -192,7 +198,8 @@
                     android:fontFamily="@font/montserrat_light"
                     android:text="Ticket Qty"
                     android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textColor="@color/grey"/>
 
                 <TextView
                     android:id="@+id/resi_qty"
@@ -245,7 +252,7 @@
         android:background="@drawable/rectangle_30_shape"
         android:fontFamily="@font/montserrat_light"
         android:gravity="center"
-        android:text="Continue"
+        android:text="Download"
         android:textColor="@color/white"
         android:textSize="18sp"
         app:cornerRadius="20dp"
