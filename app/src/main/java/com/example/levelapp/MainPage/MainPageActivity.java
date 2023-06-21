@@ -235,5 +235,6 @@ public class MainPageActivity extends AppCompatActivity {
     private void toFavorites() {
         Intent intent = new Intent(MainPageActivity.this, Favorites.class);
         startActivity(intent);
+        finish();
     }
 }

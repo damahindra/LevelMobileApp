@@ -47,7 +47,7 @@ public class WisataInfo extends AppCompatActivity {
         wisataDescription.setMovementMethod(new ScrollingMovementMethod());
 
         checkout_btn = findViewById(R.id.book_btn);
-        backBtn = findViewById(R.id.info_back_btn);
+        backBtn = findViewById(R.id.favorite_backBtn);
 
         Intent intent = getIntent();
 
