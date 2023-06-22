@@ -76,6 +76,7 @@ public class WisataAdapter extends RecyclerView.Adapter<WisataAdapter.WisataView
     }
 
     public class WisataViewHolder extends RecyclerView.ViewHolder {
+        WisataAdapter adapter;
         ImageView imageWisata;
         TextView namaWisata;
         TextView lokasiWisata, wisataPrice;
@@ -85,6 +86,10 @@ public class WisataAdapter extends RecyclerView.Adapter<WisataAdapter.WisataView
 
         public WisataViewHolder(@NonNull View itemView) {
             super(itemView);
+
+//            adapter
+            adapter =  WisataAdapter.this;
+
             imageWisata = itemView.findViewById(R.id.imageWisata);
             namaWisata = itemView.findViewById(R.id.namaWisata);
             lokasiWisata = itemView.findViewById(R.id.lokasiWisata);
@@ -93,13 +98,12 @@ public class WisataAdapter extends RecyclerView.Adapter<WisataAdapter.WisataView
             favoriteIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    variables to update realtime database
-                    int item_position = getAdapterPosition() + 1;
-                    boolean current_status = false;
-                    String current_path = generatePath(item_position);
-
 //                    variable to set the icon based on the item is favorite or not
                     Wisata current_item = wisataList.get(getAdapterPosition());
+
+//                    variables to update realtime database
+                    boolean current_status = false;
+                    String current_path = generatePath(current_item.getId());
 
                     if (current_item.getIcon() == R.drawable.favorite_icon_clicked) {
                         current_item.setIcon(R.drawable.favorite_icon);
@@ -116,7 +120,6 @@ public class WisataAdapter extends RecyclerView.Adapter<WisataAdapter.WisataView
                             Toast.makeText(view.getContext(), "failed to add to favorites", Toast.LENGTH_SHORT).show();
                         }
                     });
-//                    code to add items to favorite
                 }
             });
         }

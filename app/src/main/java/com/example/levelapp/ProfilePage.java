@@ -7,10 +7,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.levelapp.MainPage.MainPageActivity;
 import com.example.levelapp.Model.UserData;
 import com.firebase.ui.auth.data.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,6 +35,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import android.graphics.Paint;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -71,6 +71,8 @@ public class ProfilePage extends AppCompatActivity {
     String newProfilePicture, userDataPath;
     UserData userData, newUserData;
 
+    TextView toHistory;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +92,10 @@ public class ProfilePage extends AppCompatActivity {
         tvEmail = findViewById(R.id.tvEmail);
         etNoHP = findViewById(R.id.etNoHP);
         etTanggalLahir = findViewById(R.id.etTanggalLahir);
+
+        toHistory = findViewById(R.id.tv_history);
+        toHistory.setPaintFlags(toHistory.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
         newUserData = new UserData();
 
 //        Current User
@@ -101,7 +107,7 @@ public class ProfilePage extends AppCompatActivity {
             userDataPath = "users/" + currentUser.getEmail().replaceAll("@gmail.com", "");
         }
 
-        databaseRef.child(userDataPath).addValueEventListener(new ValueEventListener() {
+        databaseRef.child(userDataPath).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userData = snapshot.getValue(UserData.class);
@@ -197,6 +203,13 @@ public class ProfilePage extends AppCompatActivity {
             }
         });
 
+//        on click listeners
+        toHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toHistoryPage();
+            }
+        });
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -319,5 +332,10 @@ public class ProfilePage extends AppCompatActivity {
                         progressDialog.setMessage("Uploaded " + (int)progress + "%");
                     }
                 });
+    }
+
+    private void toHistoryPage() {
+        Intent history = new Intent(ProfilePage.this, History.class);
+        startActivity(history);
     }
 }

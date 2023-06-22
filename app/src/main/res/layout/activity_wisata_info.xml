@@ -7,7 +7,7 @@
     tools:context=".WisataInfo">
 
     <ImageView
-        android:id="@+id/info_back_btn"
+        android:id="@+id/favorite_backBtn"
         android:layout_width="34dp"
         android:layout_height="34dp"
         android:layout_marginStart="20dp"
