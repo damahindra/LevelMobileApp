@@ -30,14 +30,7 @@ public class SignupPage extends AppCompatActivity {
     FirebaseAuth mAuth;
 
     FirebaseAuth.AuthStateListener mAuthListener;
-    AuthMethodPickerLayout mAuthLayout = new AuthMethodPickerLayout.Builder(R.layout.activity_login_page)
-                                                                   .setGoogleButtonId(R.id.google_btn)
-                                                                   .build();
     public static final int RC_SIGN_IN = 1;
-
-    List<AuthUI.IdpConfig> providers = Arrays.asList(
-            new AuthUI.IdpConfig.GoogleBuilder().build()
-    );
     EditText user_email, user_pw;
     Button signup, google_btn;
     TextView toSignin;
@@ -50,33 +43,8 @@ public class SignupPage extends AppCompatActivity {
         user_pw = findViewById(R.id.user_password);
         signup = findViewById(R.id.signup_btn);
         toSignin = findViewById(R.id.toSignin);
-        google_btn = findViewById(R.id.google_btn);
 
         mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-//                checking if the current user is available
-                FirebaseUser user = mAuth.getCurrentUser();
-
-                startActivityForResult(
-                        AuthUI.getInstance()
-                                .createSignInIntentBuilder()
-                                .setIsSmartLockEnabled(false)
-                                .setAvailableProviders(providers)
-                                .setAuthMethodPickerLayout(mAuthLayout)
-                                .build(),
-                        RC_SIGN_IN);
-
-            }
-        };
-        google_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mAuth.addAuthStateListener(mAuthListener);
-            }
-        });
-
         toSignin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -124,10 +92,7 @@ public class SignupPage extends AppCompatActivity {
                 else Toast.makeText(SignupPage.this, "Failed to sign up", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
-
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -135,7 +100,6 @@ public class SignupPage extends AppCompatActivity {
         // listener method on stop.
         mAuth.removeAuthStateListener(mAuthListener);
     }
-
     private void toInsertData(FirebaseUser user) {
         if (user != null) {
             Intent i = new Intent(SignupPage.this, InsertData.class);
