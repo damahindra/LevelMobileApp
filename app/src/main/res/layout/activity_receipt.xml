@@ -10,8 +10,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView6"
-        android:layout_width="353dp"
-        android:layout_height="440dp"
+        android:layout_width="361dp"
+        android:layout_height="481dp"
         android:layout_marginTop="30dp"
         app:cardCornerRadius="30dp"
         app:cardElevation="20dp"
@@ -26,9 +26,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
             android:layout_marginEnd="0dp"
+            android:background="@color/white"
             android:orientation="vertical"
             android:padding="10dp"
-            android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -52,9 +52,9 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/montserrat_light"
                     android:text="Transaction ID"
+                    android:textColor="@color/grey"
                     android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/grey"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/resi_no"
@@ -81,9 +81,9 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/montserrat_light"
                     android:text="Nama"
+                    android:textColor="@color/grey"
                     android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/grey"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/resi_nama"
@@ -110,9 +110,9 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/montserrat_light"
                     android:text="Email"
+                    android:textColor="@color/grey"
                     android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/grey"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/resi_email"
@@ -139,9 +139,9 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/montserrat_light"
                     android:text="Destinasi"
+                    android:textColor="@color/grey"
                     android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/grey" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/resi_destinasi"
@@ -168,9 +168,9 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/montserrat_light"
                     android:text="Lokasi"
+                    android:textColor="@color/grey"
                     android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/grey"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/resi_lokasi"
@@ -197,9 +197,9 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/montserrat_light"
                     android:text="Ticket Qty"
+                    android:textColor="@color/grey"
                     android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/grey"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/resi_qty"
@@ -233,14 +233,35 @@
                 <TextView
                     android:id="@+id/resi_biaya"
                     android:layout_width="227dp"
-                    android:layout_height="72dp"
+                    android:layout_height="50dp"
                     android:layout_weight="1"
                     android:fontFamily="@font/montserrat_light"
                     android:textAlignment="viewEnd"
                     android:textColor="#0048FF"
                     android:textSize="18sp" />
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="10dp"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/dateTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserrat_light"
+                    android:text="Total"
+                    android:textAlignment="center"
+                    android:textColor="#0048FF"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
+
 
     </androidx.cardview.widget.CardView>
 
