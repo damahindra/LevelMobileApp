@@ -24,6 +24,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class WisataInfo extends AppCompatActivity {
 
     ImageView imageWisata, backBtn;
@@ -44,6 +47,7 @@ public class WisataInfo extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
     String fullName, email, uniqueId;
+    String formattedDateTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +105,15 @@ public class WisataInfo extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                // Get the current date and time
+                LocalDateTime now = LocalDateTime.now();
+
+                // Define the desired date and time format
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+                // Format the date and time using the formatter
+                formattedDateTime = now.format(formatter);
+
 //              User data
                 mAuth = FirebaseAuth.getInstance();
                 currentUser = mAuth.getCurrentUser();
@@ -117,7 +130,7 @@ public class WisataInfo extends AppCompatActivity {
                                 email = currentUser.getEmail();
                             }
 
-                            postTransaction(databaseRef);
+                            postTransaction(databaseRef, formattedDateTime);
                             toReceiptPage();
                             finish();
                         }
@@ -166,11 +179,13 @@ public class WisataInfo extends AppCompatActivity {
         checkout.putExtra("destination_location", lokasiWisata.getText().toString());
         checkout.putExtra("total_price", Price.getText().toString());
         checkout.putExtra("qty", String.valueOf(jumlah));
+        checkout.putExtra("dateTime", formattedDateTime);
         startActivity(checkout);
     }
 
-    private void postTransaction(DatabaseReference databaseRef) {
+    private void postTransaction(DatabaseReference databaseRef, String dateTime) {
         Transaction transaction = new Transaction(fullName, namaWisata.getText().toString(), lokasiWisata.getText().toString(), email, jumlah, Long.parseLong(Price.getText().toString().replaceAll("Rp", "")));
+        transaction.setDateTime(dateTime);
         DatabaseReference newRef = databaseRef.child("transactions").push();
         newRef.setValue(transaction);
         uniqueId = newRef.getKey();

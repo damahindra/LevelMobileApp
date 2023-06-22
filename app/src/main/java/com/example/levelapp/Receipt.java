@@ -5,6 +5,7 @@ import static java.nio.file.AccessMode.WRITE;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -40,8 +41,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class Receipt extends AppCompatActivity {
-    TextView resi_no, resi_name, resi_email, destination_name, destination_place, destination_price, resi_qty;
+    TextView resi_no, resi_name, resi_email, destination_name, destination_place, destination_price, resi_qty, dateTime;
 
+    CardView layout;
     Button continueBtn;
     String id;
 
@@ -70,7 +72,9 @@ public class Receipt extends AppCompatActivity {
         destination_place = findViewById(R.id.resi_lokasi);
         destination_price = findViewById(R.id.resi_biaya);
         resi_qty = findViewById(R.id.resi_qty);
+        dateTime = findViewById(R.id.dateTime);
         continueBtn = findViewById(R.id.btn_download);
+        layout = findViewById(R.id.cardView6);
 
         linear = findViewById(R.id.linearLayout);
 
@@ -81,22 +85,24 @@ public class Receipt extends AppCompatActivity {
         // Check if the intent has extras
         if (intent != null) {
             // Extract the extras from the intent
-            String uniqueId = intent.getStringExtra("uniqueId");
+            id = intent.getStringExtra("uniqueId");
             String buyer_name = intent.getStringExtra("buyer_name");
             String buyer_email = intent.getStringExtra("buyer_email");
             String intent_name = intent.getStringExtra("destination_name");
             String intent_price = intent.getStringExtra("total_price");
             String intent_place = intent.getStringExtra("destination_location");
             String intent_qty = intent.getStringExtra("qty");
+            String intent_dateTime = intent.getStringExtra("dateTime");
 
             //        set the info page
-            resi_no.setText(uniqueId);
+            resi_no.setText(id);
             resi_name.setText(buyer_name);
             resi_email.setText(buyer_email);
             destination_name.setText(intent_name);
             destination_place.setText(intent_place);
             destination_price.setText(intent_price);
             resi_qty.setText(intent_qty);
+            dateTime.setText(intent_dateTime);
 
         }
 
@@ -106,7 +112,8 @@ public class Receipt extends AppCompatActivity {
             public void onClick(View view) {
                 Log.d("size", "" + linear.getWidth() + " " + linear.getWidth());
                 bitmap = LoadBitmap(linear, linear.getWidth(), linear.getHeight());
-                createPdf();
+                createPdf(id);
+                Toast.makeText(Receipt.this, "Receipt saved!", Toast.LENGTH_SHORT).show();
                 //Intent download = new Intent(Receipt.this, ReceiptCreate.class);
                 //startActivity(download);
                 //finish();
@@ -119,13 +126,12 @@ public class Receipt extends AppCompatActivity {
         linear.draw(canvas);
         return bitmap;
     }
-    @RequiresApi(api = Build.VERSION_CODES.R)
-    private void createPdf() {
+    private void createPdf(String uniqueId) {
         WindowManager window = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics display = new DisplayMetrics();
         this.getWindowManager().getDefaultDisplay().getMetrics(display);
-        float width = display.widthPixels;
-        float height = display.heightPixels;
+        float width = layout.getWidth();
+        float height = layout.getHeight();
         int convertWidth = (int)width;
         int convertHeight = (int)height;
 
@@ -141,7 +147,7 @@ public class Receipt extends AppCompatActivity {
         canvas.drawBitmap(bitmap, 0, 0, null);
         document.finishPage(page);
 
-        String targetPdf = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/resiLevel.pdf";;
+        String targetPdf = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/LeveL_transaction_" + uniqueId + ".pdf";;
         File file = new File(targetPdf);
         try {
             document.writeTo(new FileOutputStream(file));

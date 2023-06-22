@@ -1,7 +1,7 @@
 package com.example.levelapp.Transaction;
 
 public class Transaction {
-    String username, place_name, place_location, email;
+    String username, place_name, place_location, email, dateTime;
     int qty;
     long total_price;
 
@@ -60,5 +60,13 @@ public class Transaction {
 
     public void setTotal_price(long total_price) {
         this.total_price = total_price;
+    }
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
     }
 }
