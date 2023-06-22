@@ -96,6 +96,7 @@ public class History extends AppCompatActivity {
     }
 
     private void clearHistory() {
+        transactionList = new ArrayList<>();
         databaseRef.child(userPath).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
