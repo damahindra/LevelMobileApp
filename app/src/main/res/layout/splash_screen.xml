@@ -12,7 +12,7 @@
         android:layout_height="145dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="116dp"
+        android:layout_marginEnd="102dp"
         android:layout_marginBottom="323dp"
         app:srcCompat="@drawable/splash_screen" />
 </RelativeLayout>
