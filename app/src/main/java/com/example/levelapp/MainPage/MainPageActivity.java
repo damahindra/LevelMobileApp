@@ -238,4 +238,9 @@ public class MainPageActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+    @Override
+    public void onBackPressed(){
+        finishAffinity();
+        System.exit(0);
+    }
 }
