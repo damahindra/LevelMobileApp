@@ -92,10 +92,7 @@ public class SignupPage extends AppCompatActivity {
                 else Toast.makeText(SignupPage.this, "Failed to sign up", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
-
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -103,7 +100,6 @@ public class SignupPage extends AppCompatActivity {
         // listener method on stop.
         mAuth.removeAuthStateListener(mAuthListener);
     }
-
     private void toInsertData(FirebaseUser user) {
         if (user != null) {
             Intent i = new Intent(SignupPage.this, InsertData.class);
