@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +46,7 @@ public class Receipt extends AppCompatActivity {
 
     CardView layout;
     Button continueBtn;
+    ImageView backBtn;
     String id;
 
     private LinearLayout linear;
@@ -63,6 +65,7 @@ public class Receipt extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receipt);
+        backBtn = findViewById(R.id.history_backBtn);
 
 //        initialization
         resi_no = findViewById(R.id.resi_no);
@@ -117,6 +120,13 @@ public class Receipt extends AppCompatActivity {
                 //Intent download = new Intent(Receipt.this, ReceiptCreate.class);
                 //startActivity(download);
                 //finish();
+            }
+        });
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
     }

@@ -7,6 +7,15 @@
     android:layout_height="match_parent"
     tools:context=".Receipt">
 
+    <ImageView
+        android:id="@+id/history_backBtn"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/backbuttoncircle_79559" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView6"
