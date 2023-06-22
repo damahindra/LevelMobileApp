@@ -35,6 +35,7 @@ public class History extends AppCompatActivity {
     Button clear;
     ImageView backBtn;
     SwipeRefreshLayout refresh;
+    TransactionAdapter adapter;
 
 //    fetch transaction data from Firebase
     FirebaseDatabase userDatabase;
@@ -103,7 +104,7 @@ public class History extends AppCompatActivity {
                     fullName = userData.getNamaDepan() + " " + userData.getNamaBelakang();
 
 //                    fetching transactions
-                    databaseRef.child("transactions").addValueEventListener(new ValueEventListener() {
+                    databaseRef.child("transactions").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             for (DataSnapshot childSnapshot : snapshot.getChildren()) {
@@ -200,7 +201,7 @@ public class History extends AppCompatActivity {
                                 }
                                 if (fullName.equals(fetched_name)) transactionList.add(new Transaction(fetched_name, fetched_location_name, fetched_location, fetched_email, fetched_qty, fetched_price));
                             }
-                            TransactionAdapter adapter = new TransactionAdapter(transactionList, History.this);
+                            adapter = new TransactionAdapter(transactionList, History.this);
                             rv_history.setLayoutManager(new LinearLayoutManager(History.this));
                             rv_history.setAdapter(adapter);
                         }

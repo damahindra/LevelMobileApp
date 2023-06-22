@@ -71,6 +71,7 @@ public class WisataInfo extends AppCompatActivity {
         checkout_btn = findViewById(R.id.book_btn);
         backBtn = findViewById(R.id.favorite_backBtn);
 
+
         Intent intent = getIntent();
 
         // Check if the intent has extras
@@ -184,6 +185,7 @@ public class WisataInfo extends AppCompatActivity {
     }
 
     private void postTransaction(DatabaseReference databaseRef, String dateTime) {
+        Log.w("message", "postTransaction ran");
         Transaction transaction = new Transaction(fullName, namaWisata.getText().toString(), lokasiWisata.getText().toString(), email, jumlah, Long.parseLong(Price.getText().toString().replaceAll("Rp", "")));
         transaction.setDateTime(dateTime);
         DatabaseReference newRef = databaseRef.child("transactions").push();
